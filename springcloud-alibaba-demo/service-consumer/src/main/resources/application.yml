@@ -1,0 +1,57 @@
+server:
+  compression:
+    enabled: true #开启gzip压缩
+spring:
+  application:
+    name: consumer
+  profiles:
+    active: dev
+    include: druid
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        #自动建表
+        hbm2ddl.auto: update
+        #格式化sql
+        format_sql: true
+        #数据库方言
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    sql-script-encoding: UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver  #不配置则从url自动获取
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        #namespace: 111222333
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '* '
+feign:
+  sentinel:
+    enabled: true
+seata:
+  registry:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: localhost:8848
+      #username: nacos
+      #password: nacos
+      #namespace: 111222333
+  config:
+    type: nacos
+    nacos:
+      group: SEATA_GROUP
+      server-addr: localhost:8848
+      #username: nacos
+      #password: nacos
+      #namespace: 111222333

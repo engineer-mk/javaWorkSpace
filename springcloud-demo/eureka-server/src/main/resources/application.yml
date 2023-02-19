@@ -1,0 +1,23 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: eureka-server
+  security:
+    user:
+      name: admin
+      password: 123123
+
+#配置 Eureka Server 注册中心
+eureka:
+  server:
+    enable-self-preservation: true #开启自我保护 默认 true
+  instance:
+    hostname: localhost  #主机名称
+    prefer-ip-address: true
+    instance-id: ${spring.clound.client.ip-address}:${server.port}
+  client:
+    register-with-eureka: false #是否将自己注册到注册中心，默认 true
+    fetch-registry: false #是否从注册中心获取服务注册信息，默认 true
+    service-url:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}/eureka/

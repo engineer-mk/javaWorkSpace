@@ -1,0 +1,38 @@
+[
+  {
+    "clusterConfig": {
+      "fallbackToLocalWhenFail": true,
+      "sampleCount": 10,
+      "strategy": 0,
+      "thresholdType": 0,
+      "windowIntervalMs": 1000
+    },
+    "clusterMode": false,
+    "controlBehavior": 0,
+    "count": 1.0,
+    "grade": 1,
+    "limitApp": "default",
+    "maxQueueingTimeMs": 500,
+    "resource": "/provider/point",
+    "strategy": 0,
+    "warmUpPeriodSec": 10
+  },
+  {
+    "clusterConfig": {
+      "fallbackToLocalWhenFail": true,
+      "sampleCount": 10,
+      "strategy": 0,
+      "thresholdType": 0,
+      "windowIntervalMs": 1000
+    },
+    "clusterMode": false,
+    "controlBehavior": 0,
+    "count": 1.0,
+    "grade": 1,
+    "limitApp": "default",
+    "maxQueueingTimeMs": 500,
+    "resource": "/provider/config/info",
+    "strategy": 0,
+    "warmUpPeriodSec": 10
+  }
+]

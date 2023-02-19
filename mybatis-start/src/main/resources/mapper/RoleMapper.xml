@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xmg.user.mapper.RoleMapper">
+    <select id="findByUserId" resultType="com.xmg.user.entity.Role">
+        select r.id,
+               r.name
+        from role r
+                 join account_role_relation arr
+                      on arr.role_id = r.id and arr.account_id = #{userId}
+    </select>
+</mapper>

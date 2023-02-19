@@ -1,0 +1,12 @@
+[
+  {
+    "count": 100.0,
+    "grade": 0,
+    "limitApp": "default",
+    "minRequestAmount": 5,
+    "resource": "/provider/config/info",
+    "slowRatioThreshold": 0.5,
+    "statIntervalMs": 3000,
+    "timeWindow": 5
+  }
+]

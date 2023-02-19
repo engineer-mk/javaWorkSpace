@@ -1,0 +1,23 @@
+server:
+  port: 8000
+  tomcat:
+    max-threads: 10
+
+#spring:
+#  redis:
+#    database: 0
+#    host: 192.168.0.100
+#    port: 6379
+#    ## Redis服务器连接密码（默认为空）
+#    password: MKABC12315REDIS
+
+#配置 Eureka Server 注册中心
+eureka:
+  instance:
+    hostname: localhost  #主机名称
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+#日志
+logging:
+  level:
+    com.xmg.accountmanage.service.AccountManageServiceFeign: debug

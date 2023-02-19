@@ -1,0 +1,56 @@
+server:
+  compression:
+    enabled: true #开启gzip压缩
+spring:
+  application:
+    name: service-consumer
+  profiles:
+    active: test01
+  # Redis 配置
+  redis:
+    timeout: 1000 # 连接超时时间（毫秒）
+    lettuce:
+      pool:
+        max-active: 100 #最大连接数
+        max-wait: 100 #最大连接阻塞等待时间
+        max-idle: 8 #最大空闲连接数
+        min-idle: 1 #最小空闲连接数
+
+#配置 Eureka Server 注册中心
+eureka:
+  client:
+    register-with-eureka: true #是否将自己注册到注册中心，默认 true
+    fetch-registry: true #是否从注册中心获取服务注册信息，默认 true
+    registry-fetch-interval-seconds: 20 #从注册中心拉取服务列表时间间隔
+    service-url:
+      defaultZone: http://admin:123123@localhost:8761/eureka/
+feign:
+  httpclient:
+    enabled: true
+  client:
+    config:
+      service-provider:
+        loggerLevel: FULL
+        connectTimeout: 3000 #请求连接超时时间
+        readTimeout: 4000 #请求处理超时时间
+  hystrix:
+    enabled: false
+
+
+##局部配置
+#service-provider:
+#  ribbon:
+#    #负载均衡策略
+#    #RoundRobinRule:轮询策略
+#    #WeightedResponseTimeRule:权重策略
+#    #RandomRule:随机策略
+#    #BestAvailableRule:最少并发策略
+#    #RetryRule:重试策略
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+#    OkToRetryOnAll0perations: true #对所有请求都进行重试
+#    MaxAutoRetries: 2 #对当前实例的重试次数
+#    MaxAutoRetriesNextServer: 0 #切换实例的重试次数
+
+
+
+

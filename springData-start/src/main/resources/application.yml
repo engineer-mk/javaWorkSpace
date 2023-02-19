@@ -1,0 +1,77 @@
+server:
+  error:
+    include-message: always
+  port: 8004
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.0.10/springData-start?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 1234
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        javax:
+          cache:
+            missing_cache_strategy: create
+        #打开hibernate统计信息
+        generate_statistics: false
+        cache:
+          #所有二级缓存区域名称的前缀
+          #region_prefix: hibernateSecondCache
+          #以更人性化的格式将数据存储在二级缓存中 ps:影响性能
+          use_structured_entries: true
+          # 打开查询缓存
+          use_query_cache: false
+          # 打开二级缓存
+          use_second_level_cache: false
+          redisson:
+            #如果 Redis 缓存不可用，Redisson 可以回退到数据库
+            fallback: true
+            config: src/main/resources/redisson.yml
+            entity:
+              eviction:
+                max_entries: 10000
+              expiration:
+                time_to_live: 600000 #10分钟
+                max_idle_time: 300000
+            collection:
+              eviction:
+                max_entries: 10000
+              expiration:
+                time_to_live: 600000
+                max_idle_time: 300000
+          # 指定缓存provider
+          region:
+            factory_class: org.redisson.hibernate.RedissonRegionFactory
+          #默认并发策略
+          default_cache_concurrency_strategy: read-write
+          #仅从拥有方更改关联时，启用或禁用双向关联的集合缓存条目的自动逐出。默认情况下禁用此功能，因为它会影响跟踪此状态的性能
+          auto_evict_collection_cache: false
+        #自动建表
+        hbm2ddl.auto: update
+        #格式化sql
+        format_sql: true
+        #数据库方言
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        max_fetch_depth: 1
+        jdbc:
+          batch_size: 100  #IDENTITY主键策略 插入时不支持batch
+    open-in-view: false
+
+  ## Redis 配置
+  redis:
+    lettuce:
+      pool:
+        ## 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        ## 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        ## 连接池中的最大空闲连接
+        max-idle: 8
+        ## 连接池中的最小空闲连接
+        min-idle: 0
+    ## 连接超时时间（毫秒）
+    timeout: 8000
+    client-type: lettuce

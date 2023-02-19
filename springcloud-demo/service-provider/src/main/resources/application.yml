@@ -1,0 +1,16 @@
+server:
+  compression:
+    enabled: true #开启gzip压缩
+#配置 Eureka Server 注册中心
+spring:
+  profiles:
+    active: test01
+  application:
+    name: service-provider
+eureka:
+  client:
+    register-with-eureka: true #是否将自己注册到注册中心，默认 true
+    fetch-registry: true #是否从注册中心获取服务注册信息，默认 true
+    registry-fetch-interval-seconds: 20 #从注册中心拉取服务列表时间间隔
+    service-url:
+      defaultZone: http://admin:123123@localhost:8761/eureka/

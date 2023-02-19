@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    druid:
+      initial-size: 1 #启动程序时，在连接池中初始化多少个连接
+      asyncInit: true #asyncInit是1.1.4中新增加的配置，如果有initialSize数量较多时，打开会加快应用启动时间
+      minIdle: 1 #回收空闲连接时，将保证至少有minIdle个连接.
+      maxActive: 20 #连接池中最多支持多少个活动会话
+      maxWait: 6000 #程序向连接池中请求连接时,超过maxWait的值后，认为本次请求失败，即连接池没有可用连接，单位毫秒，设置-1时表示无限等待
+      keepAlive: true
+      timeBetweenEvictionRunsMillis: 60000 #检查空闲连接的频率，单位毫秒, 非正整数时表示不进行检查
+      minEvictableIdleTimeMillis: 300000 #池中某个连接的空闲时长达到 N 毫秒后, 连接池在下次检查空闲连接时，将回收该连接,要小于防火墙超时设置
+      validationQuery: SELECT 1 FROM DUAL #检查池中的连接是否仍可用的 SQL 语句,druid会连接到数据库执行该SQL, 如果正常返回，则表示连接可用，否则表示连接不可用
+      validation-query-timeout: 1000
+      testWhileIdle: true #当程序请求连接，池在分配连接时，是否先检查该连接是否有效。(高效)
+      testOnBorrow: false #程序申请连接时,进行连接有效性检查（低效，影响性能）
+      testOnReturn: false #程序返还连接时,进行连接有效性检查（低效，影响性能）
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20 #每个连接最多缓存多少个SQL
+      maxOpenPreparedStatements: 20 #和上面的等价
+      removeAbandoned: true #是否强制回收连接
+      removeAbandonedTimeout: 60 #设置druid 强制回收连接的时限，当程序从池中get到连接开始算起，超过此值后，druid将强制回收该连接，单位秒。
+      logAbandoned: true #当druid强制回收连接后，是否将stack trace 记录到日志中
+      #插件配置，常用的插件有:	stat,wall,slf4j
+      #监控统计: filter:stat
+      #日志监控: filter:log4j 或者 slf4j
+      #防御SQL注入: filter:wall
+      filters: stat,wall,log4j2
+      useGlobalDataSourceStat: true
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500  #连接属性。比如设置一些连接池统计方面的配置。
+      web-stat-filter:
+        enabled: true
+        url-pattern: "/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*,/static/*"
+      stat-view-servlet:
+        url-pattern: "/druid/*"
+        login-username: admin
+        login-password: 123123
+        enabled: true

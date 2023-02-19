@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xmg.user.mapper.AccountMapper">
+
+    <resultMap id="BaseResultMap" type="com.xmg.user.entity.Account">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="ResultMap" type="com.xmg.user.entity.Account" extends="BaseResultMap">
+        <result column="did" property="department.id"/>
+        <result column="dname" property="department.name"/>
+        <collection property="roles" ofType="com.xmg.user.entity.Role">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </collection>
+        <collection property="resources" ofType="com.xmg.user.entity.Resource">
+            <id column="bid" property="id"/>
+            <result column="bname" property="name"/>
+        </collection>
+
+    </resultMap>
+    <select id="findById" resultMap="ResultMap">
+        select a.*,
+               b.id     as bid,
+               b.name   as bname,
+               c.id     as cid,
+               c.name   as cname,
+               dep.id   as did,
+               dep.name as dname
+        from account a
+                 left join department dep on a.department_id = dep.id
+                 left join account_resource_relation rb on a.id = rb.account_id
+                 left join resource b on b.id = rb.resource_id
+                 left join account_role_relation rc on a.id = rc.account_id
+                 left join role c on c.id = rc.role_id
+        <where>
+            <if test="id != nul">
+                a.id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="BaseResultMapUseAssociation" type="com.xmg.user.entity.Account" extends="BaseResultMap">
+        <association property="department" javaType="com.xmg.user.entity.Department">
+            <id column="did" property="id"/>
+            <result column="dname" property="name"/>
+        </association>
+        <collection property="roles" ofType="com.xmg.user.entity.Role">
+            <id column="cid" property="id"/>
+            <result column="cname" property="name"/>
+        </collection>
+        <collection property="resources" ofType="com.xmg.user.entity.Resource">
+            <id column="bid" property="id"/>
+            <result column="bname" property="name"/>
+        </collection>
+
+    </resultMap>
+    <select id="findByIdUseAssociation" resultMap="BaseResultMapUseAssociation">
+        select a.*,
+               b.id     as bid,
+               b.name   as bname,
+               c.id     as cid,
+               c.name   as cname,
+               dep.id   as did,
+               dep.name as dname
+        from account a
+                 left join department dep on a.department_id = dep.id
+                 left join account_resource_relation rb on a.id = rb.account_id
+                 left join resource b on b.id = rb.resource_id
+                 left join account_role_relation rc on a.id = rc.account_id
+                 left join role c on c.id = rc.role_id
+        <where>
+            <if test="id != nul">
+                a.id = #{id}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="BaseResultMapUseSpread" type="com.xmg.user.entity.Account" extends="BaseResultMap">
+        <association property="department"
+                     select="com.xmg.user.mapper.DepartmentMapper.selectById"
+                     column="department_id">
+        </association>
+        <collection property="roles"
+                    ofType="com.xmg.user.entity.Role"
+                    fetchType="eager"
+                    select="com.xmg.user.mapper.RoleMapper.findByUserId"
+                    column="{userId=id}">
+            <id column="id" property="id"/>
+        </collection>
+
+        <collection property="resources"
+                    fetchType="eager"
+                    ofType="com.xmg.user.entity.Resource"
+                    select="com.xmg.user.mapper.ResourceMapper.findByUserId"
+                    column="{userId=id}">
+        </collection>
+
+    </resultMap>
+    <select id="findByIdUseSpread" resultMap="BaseResultMapUseSpread">
+        select a.*
+        from account a
+        <where>
+            <if test="id != nul">
+                a.id = #{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>
