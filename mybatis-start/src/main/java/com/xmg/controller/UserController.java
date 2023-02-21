@@ -38,9 +38,9 @@ public class UserController {
         userService.cancel();
         return "success";
     }
-    @RequestMapping("updateTask")
-    public String updateTask(int minute, int hour) {
-        userService.updateTask(minute, hour);
+    @RequestMapping("/updateTask")
+    public String updateTask(int minute, int hour,int second) {
+        userService.updateTask(minute, hour,second);
         return "success";
     }
 }

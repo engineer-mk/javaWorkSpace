@@ -5,20 +5,38 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.ZonedDateTime;
-
-//代码路由配置
+/**
+ * 代码路由配置
+ *
+ * @author makui
+ */
 @Configuration
 public class GateWayConfig {
-    //@Bean
-    public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder){
-        final RouteLocatorBuilder.Builder builder = routeLocatorBuilder.routes()
+    @Bean
+    public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        return builder.routes()
                 .route("accountList", predicateSpec -> predicateSpec.path("/account/list")
-                        .uri("http://localhost:8000/account/loist"));
-        return builder.build();
+                        .and().path("/admin/*")
+                        .uri("http://localhost:8000/account/loist")
+                ).build();
     }
-    public static void main(String[] args) {
-        ZonedDateTime now = ZonedDateTime.now();
-        System.out.println(now.toString());
+
+    /**
+     * 断路器
+     * @param builder
+     * @return
+     */
+    @Bean
+    public RouteLocator routes(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("circuitBreakerRoute", predicateSpec -> predicateSpec.path("/consumingServiceEndpoint")
+                        .filters(f -> f.circuitBreaker(c -> c.setName("myCircuitBreaker")
+                                        .setFallbackUri("forward:/inCaseOfFailureUseThis")
+                                        .addStatusCode("500"))
+                                .rewritePath("/consumingServiceEndpoint", "/backingServiceEndpoint"))
+                        .uri("lb://backing-service:8088")
+                ).build();
     }
- }
+
+
+}
