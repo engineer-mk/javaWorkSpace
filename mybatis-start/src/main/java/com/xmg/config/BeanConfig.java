@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
@@ -15,10 +14,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 @Configuration
 public class BeanConfig {
     @Bean
-    public TaskScheduler taskScheduler(){
+    public TaskScheduler taskScheduler() {
         final ConcurrentTaskScheduler concurrentTaskScheduler = new ConcurrentTaskScheduler();
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);
-//        executor.setRemoveOnCancelPolicy(true);
+        executor.setRemoveOnCancelPolicy(true);
         concurrentTaskScheduler.setScheduledExecutor(executor);
         return concurrentTaskScheduler;
     }

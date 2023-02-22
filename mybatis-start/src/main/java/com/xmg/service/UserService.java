@@ -34,7 +34,7 @@ public class UserService implements InitializingBean {
         this.task.cancel(true);
     }
 
-    public void updateTask(int minute, int hour,int second) {
+    public void updateTask(int minute, int hour, int second) {
         UserService.minute = minute;
         UserService.hour = hour;
         UserService.second = second;
@@ -42,9 +42,11 @@ public class UserService implements InitializingBean {
         createScheduler();
     }
 
+    /**
+     * 参数化时间设置定时任务
+     */
     public void createScheduler() {
-//        String str = "0 " + minute + " " + hour + " * * ?";
-        String str = second + " * * * * ?";
+        String str = second + " " + minute + " " + hour + " * * ?";
         CronTrigger t = new CronTrigger(str);
         task = taskScheduler.schedule(this::task, t);
     }
@@ -55,9 +57,4 @@ public class UserService implements InitializingBean {
         createScheduler();
     }
 
-    public static void main(String[] args) {
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        final LocalDateTime now = LocalDateTime.now();
-        System.out.println(now.format(format));
-    }
 }
