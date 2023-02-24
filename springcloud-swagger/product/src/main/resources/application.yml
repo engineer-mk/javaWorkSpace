@@ -1,0 +1,9 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: product
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.91.50:8848

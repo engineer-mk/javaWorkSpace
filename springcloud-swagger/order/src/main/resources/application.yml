@@ -1,0 +1,9 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.91.50:8848
