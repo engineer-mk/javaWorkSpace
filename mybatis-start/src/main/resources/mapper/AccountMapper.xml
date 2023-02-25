@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="xmg.xmg.user.mapper.AccountMapper">
+<mapper namespace="com.xmg.user.mapper.AccountMapper">
 
-    <resultMap id="BaseResultMap" type="xmg.xmg.user.entity.Account">
+    <resultMap id="BaseResultMap" type="com.xmg.user.entity.Account">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="phone" property="phone"/>
@@ -12,14 +12,14 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <resultMap id="ResultMap" type="xmg.xmg.user.entity.Account" extends="BaseResultMap">
+    <resultMap id="ResultMap" type="com.xmg.user.entity.Account" extends="BaseResultMap">
         <result column="did" property="department.id"/>
         <result column="dname" property="department.name"/>
-        <collection property="roles" ofType="xmg.xmg.user.entity.Role">
+        <collection property="roles" ofType="com.xmg.user.entity.Role">
             <id column="cid" property="id"/>
             <result column="cname" property="name"/>
         </collection>
-        <collection property="resources" ofType="xmg.xmg.user.entity.Resource">
+        <collection property="resources" ofType="com.xmg.user.entity.Resource">
             <id column="bid" property="id"/>
             <result column="bname" property="name"/>
         </collection>
@@ -46,16 +46,16 @@
         </where>
     </select>
 
-    <resultMap id="BaseResultMapUseAssociation" type="xmg.xmg.user.entity.Account" extends="BaseResultMap">
-        <association property="department" javaType="xmg.xmg.user.entity.Department">
+    <resultMap id="BaseResultMapUseAssociation" type="com.xmg.user.entity.Account" extends="BaseResultMap">
+        <association property="department" javaType="com.xmg.user.entity.Department">
             <id column="did" property="id"/>
             <result column="dname" property="name"/>
         </association>
-        <collection property="roles" ofType="xmg.xmg.user.entity.Role">
+        <collection property="roles" ofType="com.xmg.user.entity.Role">
             <id column="cid" property="id"/>
             <result column="cname" property="name"/>
         </collection>
-        <collection property="resources" ofType="xmg.xmg.user.entity.Resource">
+        <collection property="resources" ofType="com.xmg.user.entity.Resource">
             <id column="bid" property="id"/>
             <result column="bname" property="name"/>
         </collection>
@@ -83,23 +83,23 @@
     </select>
 
 
-    <resultMap id="BaseResultMapUseSpread" type="xmg.xmg.user.entity.Account" extends="BaseResultMap">
+    <resultMap id="BaseResultMapUseSpread" type="com.xmg.user.entity.Account" extends="BaseResultMap">
         <association property="department"
-                     select="xmg.xmg.user.mapper.DepartmentMapper.selectById"
+                     select="com.xmg.user.mapper.DepartmentMapper.selectById"
                      column="department_id">
         </association>
         <collection property="roles"
-                    ofType="xmg.xmg.user.entity.Role"
+                    ofType="com.xmg.user.entity.Role"
                     fetchType="eager"
-                    select="xmg.xmg.user.mapper.RoleMapper.findByUserId"
+                    select="com.xmg.user.mapper.RoleMapper.findByUserId"
                     column="{userId=id}">
             <id column="id" property="id"/>
         </collection>
 
         <collection property="resources"
                     fetchType="eager"
-                    ofType="xmg.xmg.user.entity.Resource"
-                    select="xmg.xmg.user.mapper.ResourceMapper.findByUserId"
+                    ofType="com.xmg.user.entity.Resource"
+                    select="com.xmg.user.mapper.ResourceMapper.findByUserId"
                     column="{userId=id}">
         </collection>
 
