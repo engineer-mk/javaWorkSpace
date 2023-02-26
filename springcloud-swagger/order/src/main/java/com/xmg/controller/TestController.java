@@ -27,4 +27,9 @@ public class TestController {
         list.add(order);
         return list;
     }
+
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public List<Order> page(){
+        return orders();
+    }
 }

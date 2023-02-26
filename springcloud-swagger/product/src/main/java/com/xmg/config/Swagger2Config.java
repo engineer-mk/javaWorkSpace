@@ -20,6 +20,7 @@ import java.util.List;
 
 /**
  * Swagger2API文档的配置
+ * @author makui
  */
 @Configuration
 @EnableSwagger2
