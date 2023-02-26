@@ -2,10 +2,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.91.50:8848
+        server-addr: 192.168.0.10:8848
         #namespace: 111222333
       config:
-        server-addr: 192.168.91.50:8848
+        server-addr: 192.168.0.10:8848
         file-extension: properties
         name: provider  #provider.properties 配置中心文件名称
         group: DEFAULT_GROUP

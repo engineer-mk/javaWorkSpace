@@ -20,4 +20,4 @@ eureka:
 #日志
 logging:
   level:
-    xmg.xmg.accountmanage.service.AccountManageServiceFeign: debug
+    com.xmg.accountmanage.service.AccountManageServiceFeign: debug

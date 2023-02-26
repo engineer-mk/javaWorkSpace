@@ -6,7 +6,4 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
-springdoc:
-  swagger-ui:
-    use-root-path: true
+        server-addr: 192.168.91.50:8848
