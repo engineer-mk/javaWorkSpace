@@ -24,19 +24,22 @@ spring:
             - Path=/order/**
           filters:
             - RewritePath=/order/(?<path>.*),/$\{path}
-        - id: openapi
-          uri: http://localhost:${server.port}
-          predicates:
-            - Path=/order/v3/api-docs/**
-          filters:
-#            - RewritePath=/v3/api-docs/(?<path>.*),/$\{path}/v3/api-docs
-            - AddBasePath
 springdoc:
   swagger-ui:
     use-root-path: true
-#    urls:
-#      - name: product
-#        url: /v3/api-docs/product-service
-#      - name: order
-#        url: /v3/api-docs/order-service
-
+application:
+  doc-services:
+      - order
+      - product
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "shutdown"
+logging:
+  level:
+    com.xmg.filter.ApiLoggingFilter: debug

@@ -1,22 +1,27 @@
 package com.xmg.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Contact;
-import io.swagger.v3.oas.models.info.Info;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.AbstractSwaggerUiConfigProperties;
 import org.springdoc.core.SwaggerUiConfigProperties;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
+ * springDoc 配置
+ *
  * @author makui
  * @created 2023/2/24
  **/
@@ -24,31 +29,41 @@ import java.util.Set;
 @Configuration
 @RequiredArgsConstructor
 public class SpringDocConfig {
-    protected final SwaggerUiConfigProperties swaggerUiConfigProperties;
-    protected final RouteDefinitionLocator routeDefinitionLocator;
+    private final SwaggerUiConfigProperties swaggerUiConfigProperties;
+    private final RouteDefinitionLocator routeDefinitionLocator;
+    private final SpringDocRouteLocator springDocRouteLocator;
+    private final DiscoveryClient discoveryClient;
+    private final ApplicationProperties applicationProperties;
 
-
-//    @PostConstruct
-//    public void autoInitSwaggerUrls() {
-//        List<RouteDefinition> definitions = routeDefinitionLocator.getRouteDefinitions().collectList().block();
-//        if (definitions != null) {
-//            definitions.stream().filter(it -> it.getId().startsWith("ReactiveCompositeDiscoveryClient_")).forEach(routeDefinition -> {
-//                final String name = routeDefinition.getId().replace("ReactiveCompositeDiscoveryClient_", "").toLowerCase();
-//                AbstractSwaggerUiConfigProperties.SwaggerUrl swaggerUrl = new AbstractSwaggerUiConfigProperties.SwaggerUrl(
-//                        name, "/" + routeDefinition.getUri().toString().replace("lb://", "").toLowerCase() + "/v3/api-docs", name
-//                );
-//                Set<AbstractSwaggerUiConfigProperties.SwaggerUrl> urls = swaggerUiConfigProperties.getUrls();
-//                if (urls == null) {
-//                    urls = new LinkedHashSet<>();
-//                    swaggerUiConfigProperties.setUrls(urls);
-//                }
-//                urls.add(swaggerUrl);
-//            });
-//        }
-//    }
+    private static final ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     @PostConstruct
-    public void autoInitSwaggerUrls() {
+    public void refSwaggerUrls() {
+        service.scheduleAtFixedRate(this::doRefSwaggerUrls, 5, 5, TimeUnit.SECONDS);
+    }
+
+    private void doRefSwaggerUrls() {
+        final List<String> docServices = discoveryClient.getServices().stream()
+                .filter(applicationProperties.getDocServices()::contains)
+                .collect(Collectors.toList());
+        if (docServices.isEmpty()) {
+            return;
+        }
+        final Set<AbstractSwaggerUiConfigProperties.SwaggerUrl> swaggerUrls = docServices.stream()
+                .map(it -> {
+                    final String url = "/" + it + "/v3/api-docs";
+                    return new AbstractSwaggerUiConfigProperties.SwaggerUrl(it, url, it);
+                })
+                .collect(Collectors.toSet());
+        if (Objects.equals(swaggerUiConfigProperties.getUrls(), swaggerUrls)) {
+            return;
+        }
+        swaggerUiConfigProperties.setUrls(swaggerUrls);
+        springDocRouteLocator.buildRoutes(docServices);
+
+    }
+
+    public void createSwaggerUrls() {
         routeDefinitionLocator.getRouteDefinitions()
                 .filter(it -> it.getId().startsWith("ReactiveCompositeDiscoveryClient_"))
                 .flatMap(it -> {
@@ -61,24 +76,7 @@ public class SpringDocConfig {
                 }).map(it -> {
                     swaggerUiConfigProperties.setUrls(it);
                     return it;
-                })
-                .subscribe(it->{
-                    log.info("SwaggerUrl size：" + it.size());
-                });
+                }).subscribe();
     }
-
-//    @Bean
-//    @Lazy(false)
-//    public List<GroupedOpenApi> apis(RouteDefinitionLocator locator) {
-//        List<GroupedOpenApi> groups = new ArrayList<>();
-//        List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
-//        assert definitions != null;
-//        definitions.stream().filter(routeDefinition -> routeDefinition.getId().matches(".*-service")).forEach(routeDefinition -> {
-//            String name = routeDefinition.getId().replaceAll("-service", "");
-//            final GroupedOpenApi openApi = GroupedOpenApi.builder().pathsToMatch("/" + name + "/**").group(name).build();
-//            groups.add(openApi);
-//        });
-//        return groups;
-//    }
 
 }
