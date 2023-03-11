@@ -5,10 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Account {
     private Integer id;
     private String username;
     private String phone;
+
+    public Account(Integer id, String username, String phone) {
+        this.id = id;
+        this.username = username;
+        this.phone = phone;
+    }
 }
