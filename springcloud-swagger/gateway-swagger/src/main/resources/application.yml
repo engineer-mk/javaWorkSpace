@@ -6,12 +6,32 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 192.168.91.8:8848
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       discovery:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
       routes:
+        - id: wms
+          uri: http://service.self-custom.com
+          predicates:
+            - Path=/**
+          filters:
+            - RemoveRequestHeader=Authorization
+            - AddRequestHeader=Authorization,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkNzdmMWQ4NDBlOGU1M2RiMDQ0MmI0ZTUyNjM2NGE3OSIsImlhdCI6MTY3ODg3NjQ0MCwiZXhwIjoxNjc5MTM1NjQwfQ.R-naO65o52M-ZBuzNBYpWFXEpPIBnVu_cHNLcKmrKYscqzEGE1GO6qQtih3aBElD9g3CDz5-cK_L7mZOwL2Nhw
+
+            - RemoveRequestHeader=Access-Control-Allow-Origin
+#            - RewriteResponseHeader=Access-Control-Allow-Origin,[\s\S]*,*
+#            - RewriteResponseHeader=Access-Control-Allow-Methods,[\s\S]*,*
+#            - RewriteResponseHeader=Access-Control-Allow-Headers,[\s\S]*,*
+            - PrefixPath=/wms
+
         - id: product
           uri: lb://product
           predicates:

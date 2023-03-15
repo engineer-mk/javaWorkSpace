@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: frontend
+dubbo:
+  protocol:
+    name: dubbo
+    port: 10086
+  registries:
+    address: nacos://${nacos.address:localhost}:8848?username=nacos&password=nacos
