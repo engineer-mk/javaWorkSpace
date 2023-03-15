@@ -19,6 +19,8 @@
         <module>dubbo-demo-product</module>
         <module>dubbo-demo-order</module>
         <module>dubbo-demo-frontend</module>
+        <module>dubbo-demo-consumer</module>
+        <module>dubbo-demo-consumer</module>
     </modules>
 
     <properties>
@@ -31,5 +33,16 @@
         <nacos.version>2.2.0</nacos.version>
     </properties>
 
+<!--    <dependencyManagement>-->
+<!--        <dependencies>-->
+<!--            <dependency>-->
+<!--                <groupId>com.alibaba.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-alibaba-dependencies</artifactId>-->
+<!--                <version>2021.0.4.0</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
+<!--        </dependencies>-->
+<!--    </dependencyManagement>-->
 
 </project>

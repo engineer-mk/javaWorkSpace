@@ -15,11 +15,11 @@ import java.util.Optional;
 @DubboService
 public class ProductApiImpl implements ProductApi {
     @Override
-    public Optional<ProductVo> getProduct(Long id) {
+    public ProductVo getProduct(Long id) {
         return ProductVo.products
                 .stream()
                 .filter(it -> it.getProductId().equals(id))
-                .findFirst();
+                .findFirst().orElse(null);
     }
 
     @Override

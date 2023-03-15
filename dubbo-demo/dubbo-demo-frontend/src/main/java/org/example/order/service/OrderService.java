@@ -6,6 +6,7 @@ import org.example.order.param.OrderAddParam;
 import org.example.order.vo.OrderVo;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,14 +15,14 @@ import java.util.List;
  **/
 @Service
 public class OrderService {
-    @DubboReference()
+    @DubboReference
     private OrderApi orderApi;
 
     public String createOrder(OrderAddParam param) {
         return orderApi.createOrder(param);
     }
 
-    public List<OrderVo> orderList() {
+    public Collection<OrderVo> orderList() {
         return orderApi.orderList();
     }
 }

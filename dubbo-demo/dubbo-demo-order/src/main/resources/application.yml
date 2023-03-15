@@ -1,12 +1,9 @@
-server:
-  port: 8001
 spring:
   application:
-    name: frontend
+    name: order
 dubbo:
   protocol:
     name: dubbo
-#    port: 10086
+    port: 10087
   registry:
     address: nacos://${nacos.address:192.168.0.10}:8848?username=nacos&password=nacos
-
