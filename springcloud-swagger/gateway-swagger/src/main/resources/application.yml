@@ -11,9 +11,11 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
+            allowCredentials: false #是否允许发送cookie
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
+            maxAge: 180   # 预检请求的缓存时间（秒），即在这个时间段里对于相同的跨域请求不会再预检
       discovery:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
@@ -24,12 +26,9 @@ spring:
             - Path=/**
           filters:
             - RemoveRequestHeader=Authorization
-            - AddRequestHeader=Authorization,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkNzdmMWQ4NDBlOGU1M2RiMDQ0MmI0ZTUyNjM2NGE3OSIsImlhdCI6MTY3ODg3NjQ0MCwiZXhwIjoxNjc5MTM1NjQwfQ.R-naO65o52M-ZBuzNBYpWFXEpPIBnVu_cHNLcKmrKYscqzEGE1GO6qQtih3aBElD9g3CDz5-cK_L7mZOwL2Nhw
+            - AddRequestHeader=Authorization,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MjZlMDlkNzhhNDQzMDZkNTE3NWM5YWM5NmZhODdiNyIsImlhdCI6MTY3ODk0NDc3OCwiZXhwIjoxNjc5MjAzOTc4fQ.kVHet_R5SXgKj4T9h_GLU71uac9jdGRgU9gfC65yVFIEEdGkd2gJhbKqbC-iTuLs0TkwshUJXlYWQ8DgpcUdow
 
             - RemoveRequestHeader=Access-Control-Allow-Origin
-#            - RewriteResponseHeader=Access-Control-Allow-Origin,[\s\S]*,*
-#            - RewriteResponseHeader=Access-Control-Allow-Methods,[\s\S]*,*
-#            - RewriteResponseHeader=Access-Control-Allow-Headers,[\s\S]*,*
             - PrefixPath=/wms
 
         - id: product

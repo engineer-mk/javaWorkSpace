@@ -34,11 +34,6 @@ public class ApiLoggingFilter implements GlobalFilter, Ordered {
         }
         exchange.getAttributes().put(START_TIME, System.currentTimeMillis());
         return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-            final HttpHeaders headers = exchange.getResponse().getHeaders();
-            final List<String> strings = headers.get("Access-Control-Allow-Origin");
-            if (strings != null && strings.size() > 1) {
-                headers.put("Access-Control-Allow-Origin", Collections.singletonList(strings.get(0)));
-            }
             Long startTime = exchange.getAttribute(START_TIME);
             if (startTime != null) {
                 Long executeTime = (System.currentTimeMillis() - startTime);
