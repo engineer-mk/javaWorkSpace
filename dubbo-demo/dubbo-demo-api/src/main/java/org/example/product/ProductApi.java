@@ -12,7 +12,7 @@ import java.util.Optional;
  **/
 public interface ProductApi {
 
-    Optional<ProductVo> getProduct(Long id);
+    ProductVo getProduct(Long id);
 
     Collection<ProductVo> getProductList();
 }

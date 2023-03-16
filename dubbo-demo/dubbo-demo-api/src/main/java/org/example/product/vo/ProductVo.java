@@ -3,6 +3,8 @@ package org.example.product.vo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +15,12 @@ import java.util.Set;
  **/
 @Data
 @NoArgsConstructor
-public class ProductVo {
+public class ProductVo implements Serializable {
+
     public static final Set<ProductVo> products = new HashSet<>();
+    @Serial
+    private static final long serialVersionUID = 2349070332799289653L;
+
     static {
         products.add(new ProductVo(1L, "mac book pro 1"));
         products.add(new ProductVo(2L, "mac book pro 2"));
