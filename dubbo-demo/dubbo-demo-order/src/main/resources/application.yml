@@ -4,6 +4,8 @@ spring:
 dubbo:
   protocol:
     name: dubbo
-    port: 10087
+    port: 10010
   registry:
     address: nacos://${nacos.address:192.168.0.10}:8848?username=nacos&password=nacos
+nacos:
+  address: 192.168.91.8

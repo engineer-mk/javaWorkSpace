@@ -1,0 +1,6 @@
+dubbo:
+  application:
+    name: provider
+  protocol:
+    name: dubbo
+    port: 10088

@@ -19,7 +19,8 @@
         <module>dubbo-demo-product</module>
         <module>dubbo-demo-order</module>
         <module>dubbo-demo-frontend</module>
-        <module>dubbo-demo-consumer</module>
+        <module>dubbo-demo-simple-consumer</module>
+        <module>dubbo-demo-simple-provider</module>
     </modules>
 
     <properties>

@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>dubbo-demo-consumer</artifactId>
+    <artifactId>dubbo-demo-simple-consumer</artifactId>
 
 
     <dependencies>

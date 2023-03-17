@@ -1,0 +1,8 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: consumer
+dubbo:
+  consumer:
+    timeout: 10000
