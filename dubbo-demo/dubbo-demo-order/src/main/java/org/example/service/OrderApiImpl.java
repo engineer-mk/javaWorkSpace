@@ -1,10 +1,10 @@
-package org.example.api;
+package org.example.service;
 
-import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.dubbo.rpc.RpcContext;
 import org.example.order.OrderApi;
 import org.example.order.param.OrderAddParam;
 import org.example.order.vo.OrderVo;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,14 +15,13 @@ import java.util.List;
  * @author makui
  * @created 2023/3/14
  **/
-@DubboService
+@Service
 public class OrderApiImpl implements OrderApi {
-    @Value("${dubbo.protocol.port}")
-    private String port;
 
     @Override
     public String createOrder(OrderAddParam param) {
-        return param.getUserId() + "-" + param.getProductId()+"-"+port;
+        final String remoteAddressString = RpcContext.getServerContext().getLocalAddressString();
+        return param.getUserId() + "-" + param.getProductId() + "-" + remoteAddressString;
     }
 
     @Override

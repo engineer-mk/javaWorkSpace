@@ -7,5 +7,7 @@ ADD target/*.jar app.jar
 # 对外暴漏的端口号
 EXPOSE 10010
 # 运行
-ENTRYPOINT ["java", "-jar", "app.jar"]
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+ENV JAVA_OPTS=""
+ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
 
