@@ -20,8 +20,8 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public String createOrder(OrderAddParam param) {
-        final String remoteAddressString = RpcContext.getServerContext().getLocalAddressString();
-        return param.getUserId() + "-" + param.getProductId() + "-" + remoteAddressString;
+        final String localAddressString = RpcContext.getServerContext().getLocalAddressString();
+        return param.getUserId() + "-" + param.getProductId() + "-" + localAddressString + "-" + System.currentTimeMillis();
     }
 
     @Override
