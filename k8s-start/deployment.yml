@@ -5,23 +5,23 @@ metadata:
   namespace: default        # 创建Deployment的命名空间
 spec:
   replicas: 1             # 部署副本数
-  selector:
+  selector:               # 定义该Deployment要管理哪些Pod，使用标签进行匹配
     matchLabels:
       app: k8s-start      # 标记选择器，用于标记由该Deployment创建的Pod
       commentVersion: v1  # 标记选择器，用于标记部署的版本
-  template:
-    metadata:
+  template:               # 定义Pod的元数据和规范
+    metadata:             # Pod的元数据
       labels:
         app: k8s-start      # Pod的标签
         commentVersion: v1  # 部署的版本标签
-    spec:
-      containers:
+    spec:                    # Pod的规范
+      containers:            # 定义Pod中的容器
         - name: k8s-start                          # 容器的名称
           image: registry.cn-hangzhou.aliyuncs.com/xmg-docker/k8s-start       # 容器使用的Docker镜像
           imagePullPolicy: Always            # Always：每次创建时都会拉取镜像 IfNotPresent：宿主机不存在时拉取镜像 Never：从不主动拉取镜像
           ports:
-            - name: http                            # 端口名称
-              containerPort: 8000                   # 容器使用的端口号
+            - name: http                           # 端口名称
+              containerPort: 8000                  # 容器使用的端口号
               protocol: TCP                        # 容器使用的协议类型
-      imagePullSecrets:
+      imagePullSecrets:                            # 镜像拉取秘钥
         - name: my-aliyun-docker-registry

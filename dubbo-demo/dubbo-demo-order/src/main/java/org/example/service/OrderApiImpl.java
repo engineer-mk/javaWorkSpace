@@ -20,10 +20,11 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public String createOrder(OrderAddParam param) {
+        //q: 为什么这里可以获取到远程调用的地址？
+        //a: 因为在dubbo的filter中，会将远程调用的地址放到RpcContext中，这里就可以获取到了
         final String localAddressString = RpcContext.getServerContext().getLocalAddressString();
         return param.getUserId() + "-" + param.getProductId() + "-" + localAddressString + "-" + System.currentTimeMillis();
     }
-
     @Override
     public Collection<OrderVo> orderList() {
         List<OrderVo> result = new ArrayList<>();

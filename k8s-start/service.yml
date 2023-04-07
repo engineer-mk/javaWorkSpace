@@ -1,0 +1,28 @@
+# 定义一个 Kubernetes Service 的配置，版本号为 v1
+apiVersion: v1
+# 定义该资源对象的类型为 Service
+kind: Service
+# 定义 Service 的元数据，包括名称和所属命名空间
+metadata:
+  name: k8s-start
+  namespace: default
+# 定义 Service 的规范，包括类型、会话亲和性、选择器、端口等
+spec:
+  # 定义 Service 的类型
+  #ClusterIP(默认值): 在集群的内部 IP 上公开 Service 。这种类型使得 Service 只能从集群内访问。。
+  #NodePort：这种类型的 Service 会在每个节点上打开一个端口，将请求转发到 Service 的后端 Pod。可以通过任何一个节点的 IP 地址和暴露的端口访问 Service。
+  # LoadBalancer：这种类型的 Service 在云上运行 Kubernetes 时非常有用，可以将 Service 暴露给公共网络。它会创建一个外部负载均衡器，并将请求转发到 Service 的后端 Pod。公共网络上的客户端可以使用 Service 的 IP 地址和暴露的端口访问它。
+  type: NodePort
+  # 定义会话亲和性为 None
+  sessionAffinity: None
+  # 定义 Service 选择器，选择标签为 app=k8s-start 的 Pod
+  selector:
+    app: k8s-start
+  # 定义 Service 的端口，将 8000 端口映射到同一命名空间下的 Pod 的 8000 端口上
+  ports:
+    - port: 80
+      name: server
+      targetPort: 8000
+      #有效范围 30000-32767
+      nodePort: 30000
+      protocol: TCP
