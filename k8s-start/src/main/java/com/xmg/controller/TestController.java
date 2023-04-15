@@ -13,7 +13,7 @@ public class TestController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
-        return "hello: kubernetes";
+        return "hello: kubernetes v2";
     }
 
 }
