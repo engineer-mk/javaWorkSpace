@@ -1,7 +1,7 @@
 package org.example.product.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.product.service.ProductService;
+import org.example.product.service.ProductRemoteApi;
 import org.example.product.vo.ProductVo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +17,10 @@ import java.util.Collection;
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService productService;
+    private final ProductRemoteApi productRemoteApi;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Collection<ProductVo> productList() {
-        return productService.getProductList();
+        return productRemoteApi.getProductList();
     }
 }
