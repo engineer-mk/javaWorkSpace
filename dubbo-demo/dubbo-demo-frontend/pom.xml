@@ -54,6 +54,22 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-metrics-api</artifactId>
+            <version>${dubbo.metrics.api}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-micrometer-1.10</artifactId>
+            <version>${apm.toolkit.micrometer}</version>
+        </dependency>
     </dependencies>
 
 </project>

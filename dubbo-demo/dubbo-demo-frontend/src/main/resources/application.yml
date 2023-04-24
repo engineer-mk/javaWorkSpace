@@ -4,6 +4,8 @@ spring:
   application:
     name: frontend
 dubbo:
+  application:
+    qos-port: 22281
   consumers:
     order:
       loadbalance: roundrobin #加权轮询

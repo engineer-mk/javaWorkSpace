@@ -4,6 +4,7 @@
 dubbo:
   application:
     name: product
+    qos-port: 22286
   protocol:
     name: dubbo
     port: 10086

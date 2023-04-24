@@ -12,3 +12,4 @@ mybatis-plus:
     map-underscore-to-camel-case: true #是否开启驼峰命名自动映射
 server:
   port: 8003
+debug: true
