@@ -17,6 +17,7 @@ public class MyTransformer implements ClassFileTransformer {
         this.methodName = args[1];
     }
 
+    //-javaagent:/Users/makui/work/PrivateSpace/javaWorkSpace/angent-start/target/myAgent-jar-with-dependencies.jar=com.xmg.controller.TestController,test
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain, byte[] classfileBuffer) {
         try {
