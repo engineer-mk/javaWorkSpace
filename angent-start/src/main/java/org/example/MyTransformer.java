@@ -1,39 +1,52 @@
 package org.example;
 
-import jdk.internal.org.objectweb.asm.Opcodes;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
+import javassist.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 
 public class MyTransformer implements ClassFileTransformer {
-    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
-                            ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-        if (!className.equals("com.xmg.controller.TestController")) {
-            return null;
-        }
-        return transformClass(classfileBuffer);
+    private final String className;
+    private final String methodName;
+
+    public MyTransformer(String... args) {
+        this.className = args[0];
+        this.methodName = args[1];
     }
 
-    private byte[] transformClass(byte[] classfileBuffer) {
-        ClassReader cr = new ClassReader(classfileBuffer);
-        ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-        ClassVisitor cv = new ClassVisitor(Opcodes.ASM5, cw) {
-            @Override
-            public MethodVisitor visitMethod(int access, String name, String desc, String signature,
-                                             String[] exceptions) {
-                MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
-                return new MyMethodVisitor(mv, access, name, desc);
+    public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
+                            ProtectionDomain protectionDomain, byte[] classfileBuffer) {
+        try {
+            ClassPool classPool = ClassPool.getDefault();
+            CtClass ctClass = classPool.makeClass(new ByteArrayInputStream(classfileBuffer));
+
+            // 检查类名是否匹配
+            if (!ctClass.getName().equals(this.className)) {
+//                System.out.println("Class " + className + " not matched, skip");
+                return classfileBuffer;
             }
-        };
-        cr.accept(cv, ClassReader.EXPAND_FRAMES);
-        return cw.toByteArray();
+            System.out.println("Class " + className + " matched, start to modify method " + methodName);
+
+            // 获取要修改的方法
+            CtMethod ctMethod = ctClass.getDeclaredMethod(methodName);
+
+            // 修改字节码，添加日志
+            ctMethod.insertBefore("System.out.println(\"Method " + methodName + " called with arguments: \" + java.util.Arrays.toString($args));");
+            ctMethod.insertAfter("System.out.println(\"Method " + methodName + " returned value: \" + $_);");
+
+            // 返回修改后的字节码
+            byte[] byteCode = ctClass.toBytecode();
+            ctClass.detach();
+            return byteCode;
+        } catch (IOException | NotFoundException | CannotCompileException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
+
 }
 
 

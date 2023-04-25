@@ -10,7 +10,10 @@ public class MyAgent {
     public static void premain(String agentArgs, Instrumentation inst) {
         System.out.println("Agent premain method is called with args: " + agentArgs);
         // 在premain方法中实现代理逻辑
-        inst.addTransformer(new MyTransformer());
+        if (agentArgs != null) {
+            String[] args = agentArgs.split(",");
+            inst.addTransformer(new MyTransformer(args));
+        }
     }
 
     public static void agentmain(String agentArgs, Instrumentation inst) {
