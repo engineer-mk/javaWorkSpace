@@ -10,6 +10,7 @@ dubbo:
     order:
       loadbalance: roundrobin #加权轮询
       timeout: 5000
+      retries: 3
   protocol:
     name: dubbo
 #    port: 10086
