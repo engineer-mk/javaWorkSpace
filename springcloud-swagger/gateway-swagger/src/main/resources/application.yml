@@ -20,16 +20,20 @@ spring:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能，利用微服务名进行路由
       routes:
-        - id: wms
-          uri: http://service.self-custom.com
+        - id: ec
+          uri: http://open-ec-service.qrkjdiy.com
           predicates:
-            - Path=/**
-          filters:
-            - RemoveRequestHeader=Authorization
-            - AddRequestHeader=Authorization,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MjZlMDlkNzhhNDQzMDZkNTE3NWM5YWM5NmZhODdiNyIsImlhdCI6MTY3ODk0NDc3OCwiZXhwIjoxNjc5MjAzOTc4fQ.kVHet_R5SXgKj4T9h_GLU71uac9jdGRgU9gfC65yVFIEEdGkd2gJhbKqbC-iTuLs0TkwshUJXlYWQ8DgpcUdow
-
-            - RemoveRequestHeader=Access-Control-Allow-Origin
-            - PrefixPath=/wms
+            - Path=/qr/**
+#        - id: wms
+#          uri: http://service.self-custom.com
+#          predicates:
+#            - Path=/**
+#          filters:
+#            - RemoveRequestHeader=Authorization
+#            - AddRequestHeader=Authorization,eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2MjZlMDlkNzhhNDQzMDZkNTE3NWM5YWM5NmZhODdiNyIsImlhdCI6MTY3ODk0NDc3OCwiZXhwIjoxNjc5MjAzOTc4fQ.kVHet_R5SXgKj4T9h_GLU71uac9jdGRgU9gfC65yVFIEEdGkd2gJhbKqbC-iTuLs0TkwshUJXlYWQ8DgpcUdow
+#
+#            - RemoveRequestHeader=Access-Control-Allow-Origin
+#            - PrefixPath=/wms
 
         - id: product
           uri: lb://product

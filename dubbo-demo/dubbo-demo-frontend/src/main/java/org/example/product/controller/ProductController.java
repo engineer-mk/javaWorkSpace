@@ -1,7 +1,7 @@
 package org.example.product.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.product.service.ProductRemoteApi;
+import org.example.product.dubboApi.ProductRemoteApi;
 import org.example.product.vo.ProductVo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

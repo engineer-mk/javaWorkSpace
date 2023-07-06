@@ -2,7 +2,7 @@ package org.example.order.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.order.param.OrderAddParam;
-import org.example.order.service.OrderRemoteApi;
+import org.example.order.dubboApi.OrderRemoteApi;
 import org.example.order.vo.OrderVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
