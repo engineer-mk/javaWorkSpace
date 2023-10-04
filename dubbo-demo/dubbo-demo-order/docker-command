@@ -1,6 +1,0 @@
-docker run --name order2 \
-            -d \
-            -e DUBBO_IP_TO_REGISTRY=192.168.91.8 \
-            -e DUBBO_PORT_TO_REGISTRY=10011 \
-            -p 10011:10010 \
-            dubbo-demo-order:latest

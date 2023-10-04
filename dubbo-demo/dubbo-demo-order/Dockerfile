@@ -2,6 +2,7 @@
 FROM laosijiddd/java17:1.0
 # 维护者信息
 MAINTAINER mk
+ADD skywalking-agent.jar skywalking-agent.jar
 # 重命名
 ADD target/*.jar app.jar
 # 对外暴漏的端口号

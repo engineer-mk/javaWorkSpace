@@ -10,4 +10,4 @@ dubbo:
   application:
     qos-port: 22222
 nacos:
-  address: 192.168.91.8
+  address: 192.168.80.105
