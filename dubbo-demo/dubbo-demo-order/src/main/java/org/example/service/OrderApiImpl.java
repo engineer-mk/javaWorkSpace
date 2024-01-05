@@ -38,6 +38,7 @@ public class OrderApiImpl implements OrderApi {
 
             result.add(orderVo);
         }
+        int i = 8 / 0;
         return result;
     }
 }

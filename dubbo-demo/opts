@@ -1,3 +1,3 @@
 -javaagent:/agent/skywalking-agent.jar \
--Dskywalking.collector.backend_service=192.168.91.44:11800 \
+-Dskywalking.collector.backend_service=192.168.91.132:11800 \
 -Dskywalking.agent.service_name=dubbo-demo-order

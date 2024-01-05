@@ -1,7 +1,7 @@
 docker run --name order2 \
             -d \
-            -e DUBBO_IP_TO_REGISTRY=192.168.91.44 \
+            -e DUBBO_IP_TO_REGISTRY=192.168.91.132 \
             -e DUBBO_PORT_TO_REGISTRY=10010 \
-            -e JAVA_OPTS="-javaagent:skywalking-agent.jar -Dskywalking.collector.backend_service=192.168.91.44:11800 -Dskywalking.agent.service_name=dubbo-demo-order" \
+            -e JAVA_OPTS="-javaagent:skywalking-agent.jar -Dskywalking.collector.backend_service=192.168.91.132:11800 -Dskywalking.agent.service_name=dubbo-demo-order" \
             -p 10010:10010 \
             xmg/order:latest
