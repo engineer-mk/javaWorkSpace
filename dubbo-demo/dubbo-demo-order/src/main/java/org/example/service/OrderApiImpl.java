@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author makui
@@ -38,7 +39,12 @@ public class OrderApiImpl implements OrderApi {
 
             result.add(orderVo);
         }
-        int i = 8 / 0;
+        //产生一个随机数
+        final Random random = new Random();
+        final int i = random.nextInt(10);
+        if (i % 2 == 0) {
+            throw new ArithmeticException("随机异常");
+        }
         return result;
     }
 }
