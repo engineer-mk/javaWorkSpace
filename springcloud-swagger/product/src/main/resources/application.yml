@@ -6,7 +6,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 192.168.80.105:8848
+        server-addr: 192.168.91.44:8848
 springdoc:
   swagger-ui:
     enabled: false

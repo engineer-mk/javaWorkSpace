@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.wangji92.arthas.plugin</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>archas-</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>arthas plugin demo</name>
     <description>arthas plugin demo</description>

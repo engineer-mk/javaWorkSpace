@@ -1,0 +1,7 @@
+docker run --name product2 \
+            -d \
+            -e DUBBO_IP_TO_REGISTRY=192.168.91.44 \
+            -e DUBBO_PORT_TO_REGISTRY=10086 \
+            -e JAVA_OPTS="-javaagent:skywalking-agent.jar -Dskywalking.collector.backend_service=192.168.91.44:11800 -Dskywalking.agent.service_name=dubbo-demo-product" \
+            -p 10086:10086 \
+            xmg/order:latest

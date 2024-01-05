@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class ProductRemoteApi implements ProductApi {
-    @DubboReference
+    @DubboReference(check = false)
     @Delegate
     private ProductApi productApi;
 
