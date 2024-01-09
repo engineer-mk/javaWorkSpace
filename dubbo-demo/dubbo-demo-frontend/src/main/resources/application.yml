@@ -6,14 +6,17 @@ spring:
 dubbo:
   application:
     qos-port: 22281
+    #    https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-and-usage/security/class-check/
+    serialize-check-status: WARN
   consumers:
     order:
       loadbalance: roundrobin #加权轮询
       timeout: 5000
+      #远程服务发生异常不会重试
       retries: 3
   protocol:
     name: dubbo
-#    port: 10086
+  #    port: 10086
   registry:
     address: nacos://${nacos.address:192.168.0.10}:8848?username=nacos&password=nacos
 nacos:
