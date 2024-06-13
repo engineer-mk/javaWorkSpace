@@ -4,6 +4,7 @@ import org.example.order.param.OrderAddParam;
 import org.example.order.vo.OrderVo;
 
 import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author makui
@@ -15,4 +16,5 @@ public interface OrderApi {
 
     Collection<OrderVo> orderList();
 
+    CompletableFuture<String> createOrderAsync(OrderAddParam orderAddParam);
 }

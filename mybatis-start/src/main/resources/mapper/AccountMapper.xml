@@ -40,7 +40,7 @@
                  left join account_role_relation rc on a.id = rc.account_id
                  left join role c on c.id = rc.role_id
         <where>
-            <if test="id != nul">
+            <if test="id != null">
                 a.id = #{id}
             </if>
         </where>
@@ -76,7 +76,7 @@
                  left join account_role_relation rc on a.id = rc.account_id
                  left join role c on c.id = rc.role_id
         <where>
-            <if test="id != nul">
+            <if test="id != null">
                 a.id = #{id}
             </if>
         </where>
@@ -108,7 +108,7 @@
         select a.*
         from account a
         <where>
-            <if test="id != nul">
+            <if test="id != null">
                 a.id = #{id}
             </if>
         </where>
