@@ -17,4 +17,6 @@ public interface OrderApi {
     Collection<OrderVo> orderList();
 
     CompletableFuture<String> createOrderAsync(OrderAddParam orderAddParam);
+
+    CompletableFuture<Collection<OrderVo>> orderListAsync();
 }

@@ -3,7 +3,7 @@ package org.example.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.rpc.RpcContext;
 import org.apache.dubbo.rpc.RpcContextAttachment;
-import org.example.config.BasicConfig;
+import org.apache.dubbo.rpc.RpcServiceContext;
 import org.example.order.OrderApi;
 import org.example.order.param.OrderAddParam;
 import org.example.order.vo.OrderVo;
@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.LongStream;
 
 /**
@@ -28,17 +27,27 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public String createOrder(OrderAddParam param) {
-        log.info("param:{},time:{}", param.toString(), System.currentTimeMillis());
+        //在 Client 端和 Server 端使用，用于从 Server 端回传 Client 端，
+        // Server 端写入到 ServerContext 的参数在调用结束后可以在 Client 端的 ServerContext 获取到
         final RpcContextAttachment serverContext = RpcContext.getServerContext();
-        //q: 为什么这里可以获取到远程调用的地址？
-        //a: 因为在dubbo的filter中，会将远程调用的地址放到RpcContext中，这里就可以获取到了
+
+        //在 Dubbo 内部使用，用于传递调用链路上的参数信息，如 invoker 对象等
+        final RpcServiceContext serviceContext = RpcContext.getServiceContext();
+
+        //在 Client 端使用，往 ClientAttachment 中写入的参数将被传递到 Server 端
+        final RpcContextAttachment clientAttachment = RpcContext.getClientAttachment();
+
+        //在 Server 端使用，从 ServerAttachment 中读取的参数是从 Client 中传递过来的
+        final RpcContextAttachment serverAttachment = RpcContext.getServerAttachment();
+
         final String localAddressString = serverContext.getLocalAddressString();
+
         try {
-            Thread.sleep(5000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return param.getUserId() + "-" + param.getProductId() + "-" + localAddressString + "-" + System.currentTimeMillis();
+        return param.getUserId() + "-" + param.getProductId() + "-" + localAddressString;
     }
 
     @Override
@@ -64,14 +73,11 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public CompletableFuture<String> createOrderAsync(OrderAddParam orderAddParam) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            Thread currentThread = Thread.currentThread();
-            return currentThread.getName() + ":" + orderAddParam.getUserId() + "-" + orderAddParam.getProductId() + "-" + System.currentTimeMillis();
-        }, BasicConfig.executor);
+        throw new UnsupportedOperationException("not support");
+    }
+
+    @Override
+    public CompletableFuture<Collection<OrderVo>> orderListAsync() {
+        throw new UnsupportedOperationException("not support");
     }
 }
