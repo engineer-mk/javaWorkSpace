@@ -10,5 +10,7 @@ dubbo:
     group: dubbo
   application:
     qos-port: 22222
+  provider:
+    filter: appended
 nacos:
   address: 192.168.84.26

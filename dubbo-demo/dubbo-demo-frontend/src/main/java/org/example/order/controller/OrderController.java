@@ -35,6 +35,10 @@ public class OrderController {
     public Collection<OrderVo> orderList() {
         return orderRemoteApi.orderList();
     }
+    @RequestMapping(value = "/orderListAsync", method = RequestMethod.GET)
+    public Collection<OrderVo> orderListAsync() {
+        return orderRemoteApi.orderListAsync().join();
+    }
 
 
     @RequestMapping(value = "/createOrderAsync", method = RequestMethod.POST)

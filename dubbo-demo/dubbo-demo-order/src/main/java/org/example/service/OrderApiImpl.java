@@ -24,6 +24,7 @@ import java.util.stream.LongStream;
 @Service
 @Slf4j
 public class OrderApiImpl implements OrderApi {
+    private static final List<OrderVo> ORDER_LIST = new ArrayList<>();
 
     @Override
     public String createOrder(OrderAddParam param) {
@@ -52,23 +53,12 @@ public class OrderApiImpl implements OrderApi {
 
     @Override
     public Collection<OrderVo> orderList() {
-        List<OrderVo> result = new ArrayList<>();
-        LongStream.range(0, 5).forEach(i -> {
-            final OrderVo orderVo = new OrderVo();
-            orderVo.setId(i);
-            orderVo.setUserId(i);
-            orderVo.setProductId(i);
-            orderVo.setOrderNo(i + "-" + i);
-            orderVo.setCreateTime(LocalDateTime.now());
-            result.add(orderVo);
-        });
-        //产生一个随机数
-        final Random random = new Random();
-        final int i = random.nextInt(10);
-        if (i % 2 == 0) {
-            throw new ArithmeticException("随机异常");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        return result;
+        return ORDER_LIST;
     }
 
     @Override
