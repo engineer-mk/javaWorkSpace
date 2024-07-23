@@ -1,1 +1,1 @@
-appended=org.example.filter.AppendedFilter
+myFilter=org.example.filter.AppendedFilter

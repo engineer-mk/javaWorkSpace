@@ -8,6 +8,8 @@ dubbo:
     qos-port: 22281
     #    https://cn.dubbo.apache.org/zh-cn/overview/mannual/java-sdk/advanced-features-and-usage/security/class-check/
     serialize-check-status: WARN
+  consumer:
+    router: myRouter
   consumers:
     order:
       loadbalance: roundrobin #加权轮询
