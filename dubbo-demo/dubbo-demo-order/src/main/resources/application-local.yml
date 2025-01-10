@@ -1,0 +1,6 @@
+dubbo:
+  provider:
+    weight: 100
+    tag: local
+env:
+  host: 192.168.84.13

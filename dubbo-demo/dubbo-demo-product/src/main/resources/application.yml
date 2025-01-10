@@ -1,6 +1,15 @@
-#spring:
-#  application:
-#    name: product
+spring:
+  application:
+    name: product
+  datasource:
+    url: jdbc:mysql://${env.host}:3306/dubbo-demo-product?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=utf-8&rewriteBatchedStatements=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: 1234
+  jpa:
+    properties:
+      hibernate:
+        #自动建表
+        hbm2ddl.auto: update
 dubbo:
   application:
     name: product
@@ -11,5 +20,26 @@ dubbo:
   registry:
     address: nacos://${nacos.address:192.168.0.10}:8848?username=nacos&password=nacos
     group: dubbo
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_test_group: default #指定事务分组至集群映射关系（等号右侧的集群名需要与Seata-server注册到Nacos的cluster保持一致）
+      application-id: seata-server
+  registry:
+    type: nacos
+    nacos:
+      server-addr: ${env.host}:8848
+      group: SEATA_GROUP
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${env.host}:8848
+      group: SEATA_GROUP
 nacos:
-  address: 192.168.84.26
+  address: 192.168.84.13
+env:
+  host: 192.168.84.13

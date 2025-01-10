@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class OrderRemoteApi implements OrderApi {
-    @DubboReference(check = false,group = "order",version = "3.0")
+    @DubboReference(check = false,group = "order",version = "2.0")
     @Delegate
     private OrderApi orderApi;
 

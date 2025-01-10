@@ -18,4 +18,5 @@ public class OrderAddParam implements Serializable {
 
     private Long productId;
 
+    private Long count;
 }

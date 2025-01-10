@@ -15,4 +15,6 @@ public interface ProductApi {
     ProductVo getProduct(Long id);
 
     Collection<ProductVo> getProductList();
+
+    void reduceCount(Long id, Long count);
 }

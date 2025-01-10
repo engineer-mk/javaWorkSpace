@@ -12,6 +12,7 @@ dubbo:
     router: myRouter
   consumers:
     order:
+      tag: local
       loadbalance: roundrobin #加权轮询
       #      远程服务超时 每5000毫秒重试一次
       timeout: 5000
@@ -24,4 +25,4 @@ dubbo:
     address: nacos://${nacos.address:192.168.0.10}:8848?username=nacos&password=nacos
     group: dubbo
 nacos:
-  address: 192.168.84.26
+  address: 192.168.84.13

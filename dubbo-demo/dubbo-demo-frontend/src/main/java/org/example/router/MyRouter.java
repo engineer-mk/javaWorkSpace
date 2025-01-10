@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.config.configcenter.ConfigChangedEvent;
 import org.apache.dubbo.common.config.configcenter.ConfigurationListener;
+import org.apache.dubbo.common.utils.CollectionUtils;
 import org.apache.dubbo.common.utils.Holder;
 import org.apache.dubbo.rpc.Invocation;
 import org.apache.dubbo.rpc.Invoker;
@@ -30,11 +31,14 @@ public class MyRouter<T> extends AbstractStateRouter<T> implements Configuration
                                           boolean needToPrintMessage,
                                           Holder<RouterSnapshotNode<T>> routerSnapshotNodeHolder,
                                           Holder<String> messageHolder) throws RpcException {
-        final String s = messageHolder.get();
-        final RouterSnapshotNode<T> node = routerSnapshotNodeHolder.get();
-        final Invoker<?> invoker = invocation.getInvoker();
-        final BitList<Invoker<T>> copyInvokers = invokers.clone();
-        return null;
+        if (CollectionUtils.isEmpty(invokers)) {
+            if (needToPrintMessage) {
+                messageHolder.set("Empty invokers. Directly return.");
+            }
+            return invokers;
+        }
+        BitList<Invoker<T>> copy = invokers.clone();
+        return invokers;
     }
 
 

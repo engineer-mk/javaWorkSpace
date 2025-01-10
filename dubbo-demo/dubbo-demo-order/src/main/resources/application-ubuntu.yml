@@ -1,0 +1,6 @@
+dubbo:
+  provider:
+    weight: 300
+#    tag: ubuntu
+env:
+  host: localhost

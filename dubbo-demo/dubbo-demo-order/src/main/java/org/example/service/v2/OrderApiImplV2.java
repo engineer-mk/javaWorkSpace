@@ -1,15 +1,22 @@
 package org.example.service.v2;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.rpc.RpcContext;
 import org.apache.dubbo.rpc.RpcContextAttachment;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.example.config.BasicConfig;
+import org.example.dubboApi.ProductRemoteApi;
+import org.example.entity.ProductOrder;
 import org.example.order.OrderApi;
 import org.example.order.param.OrderAddParam;
 import org.example.order.vo.OrderVo;
+import org.example.repository.ProductOrderRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,12 +31,22 @@ import java.util.concurrent.TimeUnit;
  **/
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class OrderApiImplV2 implements OrderApi {
+    private final ProductOrderRepository productOrderRepository;
+    private final ProductRemoteApi productRemoteApi;
+
     private static final List<OrderVo> ORDER_LIST = new ArrayList<>();
 
     @Override
+    @GlobalTransactional
     public String createOrder(OrderAddParam param) {
-        throw new UnsupportedOperationException("not support");
+        final OrderVo orderVo = doCreateOrder(param);
+        productRemoteApi.reduceCount(param.getProductId(), param.getCount());
+        if (true) {
+            throw new RuntimeException("test");
+        }
+        return orderVo.getOrderNo();
     }
 
     @Override
@@ -40,18 +57,9 @@ public class OrderApiImplV2 implements OrderApi {
 
     @Override
     public CompletableFuture<String> createOrderAsync(OrderAddParam param) {
-        final RpcContextAttachment serverContext = RpcContext.getServerContext();
-        log.info("client attachment test:{}", RpcContext.getServerAttachment().getAttachment("test"));
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            final OrderVo orderVo = createOrderVo(param);
-            ORDER_LIST.add(orderVo);
-            final Thread currentThread = Thread.currentThread();
-            log.info("{}", currentThread.getName());
+            final OrderVo orderVo = doCreateOrder(param);
+            productRemoteApi.reduceCount(param.getProductId(), param.getCount());
             return orderVo.getOrderNo();
         }, BasicConfig.executor);
     }
@@ -69,13 +77,19 @@ public class OrderApiImplV2 implements OrderApi {
         }, BasicConfig.executor);
     }
 
-    private OrderVo createOrderVo(OrderAddParam param) {
+    private OrderVo doCreateOrder(OrderAddParam param) {
+        final ProductOrder order = new ProductOrder();
+        order.setUserId(param.getUserId());
+        order.setProductId(param.getProductId());
+        order.setCount(param.getCount());
+        order.setOrderNo(createOrderNo());
+        productOrderRepository.save(order);
         final OrderVo orderVo = new OrderVo();
-        orderVo.setId(new Random().nextLong());
-        orderVo.setUserId(param.getUserId());
-        orderVo.setProductId(param.getProductId());
-        orderVo.setOrderNo(param.getUserId() + "-" + param.getProductId() + "-" + RpcContext.getServerContext().getLocalAddressString());
-        orderVo.setCreateTime(LocalDateTime.now());
+        BeanUtils.copyProperties(order, orderVo);
         return orderVo;
+    }
+
+    private String createOrderNo() {
+        return DateTimeFormatter.ofPattern("yyyyMMddHHmmss").format(LocalDateTime.now()) + new Random().nextInt(1000);
     }
 }
